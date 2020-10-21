@@ -13,7 +13,7 @@ organic_heresy.0001 = {
     }
 
     immediate = {
-        save_scope_as = original_faith
+        this = { save_scope_as = original_faith }
         # Compile a list of possible heresies to convert to.
         religion = {
             every_faith = {
