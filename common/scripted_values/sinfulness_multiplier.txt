@@ -1,0 +1,5 @@
+﻿sinfulness_multiplier = {
+    add = 1
+    add = num_sinful_traits
+    subtract = num_virtuous_traits
+}
