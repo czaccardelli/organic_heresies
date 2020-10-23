@@ -37,8 +37,8 @@ organic_heresy.0001 = {
                     faith:cainitism = {
                         add_to_list = potential_heresies
                     }
+                    # Existing Christians shouldn't become Insular or Conversos since that doesn't make much sense
                     faith:conversos = {
-                        # Existing Christians shouldn't become Insular or Conversos since that doesn't make much sense
                         remove_from_list = potential_heresies
                     }
                     faith:insular_celtic = {
@@ -161,9 +161,9 @@ organic_heresy.0001 = {
 
         # pick a ruler whose provinces will be converted
         random_ruler = {
-            # head of faith's lands can't spawn a heretic stronghold
             limit = {
                 OR = {
+                    # head of faith's lands can't spawn a heretic stronghold
                     NOT = {
                         exists = scope:original_faith.religious_head
                     }
@@ -172,14 +172,18 @@ organic_heresy.0001 = {
                         NOT = { this = scope:original_faith.religious_head }
                     }
                 }
+                faith = scope:original_faith
             }
             weight = {
                 base = 100
 
                 # more likely to spawn in ruler's realm with a sinful chaplain
                 modifier = {
-                    factor = cp:councillor_court_chaplain.sinfulness_multiplier
-                } 
+                    exists = cp:councillor_court_chaplain
+                    cp:councillor_court_chaplain = {
+                            factor = sinfulness_multiplier
+                    }
+                }
 
                 # a bit more likely to spawn in ruler's realm with a sinful ruler
                 modifier = {
@@ -293,6 +297,8 @@ organic_heresy.0001 = {
 }
 # converts nearby provinces to the heresy and sends messages
 organic_heresy.0010 = {
+    scope = province
+    hidden = yes
     trigger = {
         exists = scope:heretic_stronghold
     }
@@ -318,25 +324,25 @@ organic_heresy.0010 = {
                     }
                     # send notifications to players about converted counties
                     every_player = {
-                        limit = {
-                            OR = {
-                                # notify everyone whose top liege is also the top liege of the converted county's holder (aka in the same independent realm)
-                                AND = {
-                                    exists = prev.holder.top_liege
-                                    top_liege = prev.holder.top_liege
-                                }
-                                # notify everyone near the converted county
-                                AND = {
-                                    exists = capital_county
-                                    capital_county = {
-                                        squared_distance = {
-                                            target = prev
-                                            value < squared_distance_medium
-                                        }	
-                                    }
-                                }
-                            }
-                        }
+#                        limit = {
+#                            OR = {
+#                                # notify everyone whose top liege is also the top liege of the converted county's holder (aka in the same independent realm)
+#                                AND = {
+#                                    exists = prev.holder.top_liege
+#                                    top_liege = prev.holder.top_liege
+#                                }
+#                                # notify everyone near the converted county
+#                                AND = {
+#                                    exists = capital_county
+#                                    capital_county = {
+#                                        squared_distance = {
+#                                            target = this
+#                                            value < squared_distance_medium
+#                                        }	
+#                                    }
+#                                }
+#                            }
+#                        }
                         this = {
                             save_scope_as = current_player
                             faith = {
@@ -350,7 +356,7 @@ organic_heresy.0010 = {
                             }
                             send_interface_message = {
                                 type = event_heresy_outbreak_good
-                                title = "Heretics_spawned" # TODO: localization
+                                title = HERETICS_SPAWNED
                                 show_as_tooltip = {
                                     prev = { set_county_faith = scope:heresy }
                                 }
@@ -369,7 +375,7 @@ organic_heresy.0010 = {
                             }
                             send_interface_message = {
                                 type = event_heresy_outbreak_bad
-                                title = "Heretics_spawned" # TODO: localization
+                                title = HERETICS_SPAWNED
                                 show_as_tooltip = {
                                     prev = { set_county_faith = scope:heresy }
                                 }
@@ -388,7 +394,7 @@ organic_heresy.0010 = {
                             }
                             send_interface_message = {
                                 type = event_heresy_outbreak_neutral
-                                title = "Heretics_spawned" # TODO: localization
+                                title = HERETICS_SPAWNED
                                 show_as_tooltip = {
                                     prev = { set_county_faith = scope:heresy }
                                 }

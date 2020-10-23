@@ -1,4 +1,23 @@
-﻿faith_heresy_events_pulse = {
+﻿# Code on-action: once a month for each faith
+# Root is the faith
+on_faith_monthly = {
+	on_actions = {
+		faith_holy_order_land_acquisition_pulse
+		delay = { days = { 5 10 }}
+		faith_organic_heresy_events_pulse
+		delay = { days = { 15 20 }}
+		faith_fervor_events_pulse
+	}
+	events = {
+		great_holy_war.0010 #Great Holy Wars are unlocked for a Faith.
+		great_holy_war.0001
+		great_holy_war.0022 #Pope harasses players for not pledging support to Crusade yet.
+		great_holy_war.0030 #Monthly cleanup for Beneficiaries becoming unfit for various reasons.
+	}
+	
+}
+
+faith_organic_heresy_events_pulse = {
 	trigger = {
 		fervor <= 40
 		NOR = {
