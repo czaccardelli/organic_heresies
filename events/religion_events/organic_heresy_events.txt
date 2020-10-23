@@ -180,8 +180,8 @@ organic_heresy.0001 = {
                 # more likely to spawn in ruler's realm with a sinful chaplain
                 modifier = {
                     exists = cp:councillor_court_chaplain
-                    cp:councillor_court_chaplain = {
-                            factor = sinfulness_multiplier
+                    factor = {
+                        add = cp:councillor_court_chaplain.sinfulness_multiplier
                     }
                 }
 
@@ -309,6 +309,94 @@ organic_heresy.0010 = {
     }
     immediate = {
         scope:heretic_stronghold.county = {
+            # create the heretic stronghold
+            set_county_faith = scope:heresy
+            # adjust fervor
+            scope:original_faith = { change_fervor = 15 }
+            add_county_modifier = { modifier = heretic_stronghold_modifier }
+            # send interface message about heretic stronghold (placeholder)
+            every_player = {
+#                        limit = {
+#                            OR = {
+#                                # notify everyone whose top liege is also the top liege of the converted county's holder (aka in the same independent realm)
+#                                AND = {
+#                                    exists = prev.holder.top_liege
+#                                    top_liege = prev.holder.top_liege
+#                                }
+#                                # notify everyone near the converted county
+#                                AND = {
+#                                    exists = capital_county
+#                                    capital_county = {
+#                                        squared_distance = {
+#                                            target = this
+#                                            value < squared_distance_medium
+#                                        }	
+#                                    }
+#                                }
+#                            }
+#                        }
+            this = {
+                save_scope_as = current_player
+                faith = {
+                    save_scope_as = player_faith
+                }
+            }
+            # send a good message if the heresy is player's faith
+            if = {
+                limit = {
+                    scope:player_faith = scope:heresy
+                }
+                send_interface_message = {
+                    type = event_heretic_stronghold_good
+                    title = HERETIC_STRONGHOLD_SPAWNED
+                    desc = HERETIC_STRONGHOLD_SPAWNED_DESC
+                    show_as_tooltip = {
+                        prev = { set_county_faith = scope:heresy }
+                    }
+                }
+            }
+            # send a bad message if the heresy is not the player's faith and they consider it hostile or evil
+            else_if = {
+                limit = {
+                    NOT = { scope:player_faith = scope:heresy }
+                    scope:player_faith = {
+                        faith_hostility_level = {
+                            target = scope:heresy
+                            value >= 2
+                        }
+                    }
+                }
+                send_interface_message = {
+                    type = event_heretic_stronghold_bad
+                    title = HERETIC_STRONGHOLD_SPAWNED
+                    desc = HERETIC_STRONGHOLD_SPAWNED_DESC
+                    show_as_tooltip = {
+                        prev = { set_county_faith = scope:heresy }
+                    }
+                }
+            }
+            # send a neutral message if the heresy is astray
+            else_if = {
+                limit = {
+                    NOT = { scope:player_faith = scope:heresy }
+                    scope:player_faith = {
+                        faith_hostility_level = {
+                            target = scope:heresy
+                            value = 1
+                        }
+                    }
+                }
+                send_interface_message = {
+                    type = event_heretic_stronghold_neutral
+                    title = HERETIC_STRONGHOLD_SPAWNED
+                    desc = HERETIC_STRONGHOLD_SPAWNED_DESC
+                    show_as_tooltip = {
+                        prev = { set_county_faith = scope:heresy }
+                    }
+                }
+            }
+        }
+            # chance to convert neighboring counties
             every_neighboring_county = {
                 # don't convert head of faith's land
                 limit = {
@@ -319,14 +407,15 @@ organic_heresy.0010 = {
                             NOT = { holder = scope:original_faith.religious_head }
                         }
                     }
+                    # don't convert neighboring counties if they aren't part of the original religion
+                    faith = scope:original_faith
                 }
+                this = { save_scope_as = heretic_county }
                 random = {
                     chance = 50
                     set_county_faith = scope:heresy
                     # adjust fervor
-                    scope:original_faith = {
-                        change_fervor = 5
-                    }
+                    scope:original_faith = { change_fervor = 5 }
                     # send notifications to players about converted counties
                     every_player = {
 #                        limit = {
@@ -405,6 +494,186 @@ organic_heresy.0010 = {
                                 }
                             }
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+# handles heresy spread from heretic strongholds
+organic_heresy.0011 = {
+    hidden = yes
+    scope = faith
+
+    trigger = {
+        # already checked in faith_heresy_spread_pulse
+        always = yes
+    }
+
+    immediate = {
+        every_province = {
+            limit = {
+                this = {
+                    county = {
+                        has_county_modifier = heretic_stronghold_modifier
+                    }
+                }
+            }
+            this = { save_scope_as = heretic_stronghold }
+            every_province = {
+                limit = {
+                    # don't convert provinces that are already owned by the heretics
+                    NOT = { faith = root }
+                    squared_distance = {
+                        target = scope:heretic_stronghold
+                        value < squared_distance_large
+                    }
+                    # make sure the county has heretic neighbors to stop 'islands' from forming and to maintain a good spread pattern
+                    this = {
+                        county = {
+                            any_neighboring_county = { faith = root }
+                        }
+                    }
+                }
+                add_to_list = potential_heretic_provinces
+            }
+        }
+        random_in_list = {
+            list = potential_heretic_provinces
+            weight = {
+                base = 100
+                # counties with a faith with low fervor are more susceptible
+                modifier = {
+                    add = {
+                        value = faith.fervor
+                        multiply = -1
+                    }
+                    always = yes
+                }
+                # low-control counties are more susceptible to heresy
+                modifier = {
+                    factor = 2
+                    county = { county_control < 50 }
+                }
+                modifier = {
+                    factor = 2
+                    county = { county_control < 10 }
+                }
+                # counties held by sinful rulers are more susceptible
+                modifier = {
+                    factor = {
+                        add = county.holder.sinfulness_multiplier
+                    }
+                }
+                # counties with sinful court chaplains are more susceptible
+                modifier = {
+                    factor = {
+                        add = county.holder.cp:councillor_court_chaplain.sinfulness_multiplier
+                    }
+                }
+            }
+            this = {
+                county = {
+                    set_county_faith = root
+                    save_scope_as = heretic_county
+                }
+            }
+        }
+        scope:heretic_county = {
+            trigger_event = {
+                id = organic_heresy.1000
+                days = 1
+            }
+        }
+    }
+}
+
+organic_heresy.1000 = {
+    hidden = yes
+    scope = landed_title
+    trigger = {
+        always = yes
+    }
+    immediate = {
+        scope:heretic_county.faith = { save_scope_as = heresy }
+        every_player = {
+#        limit = {
+#            OR = {
+#                # notify everyone whose top liege is also the top liege of the converted county's holder (aka in the same independent realm)
+#                AND = {
+#                exists = scope:heretic_county.holder.top_liege
+#                top_liege = scope:heretic_county.holder.top_liege
+#                }
+#                # notify everyone near the converted county
+#                AND = {
+#                exists = capital_county
+#                    capital_county = {
+#                         squared_distance = {
+#                            target = this
+#                            value < squared_distance_medium
+#                       }	
+#                    }
+#                }
+#            }
+#        }
+            this = {
+                save_scope_as = current_player
+                faith = {
+                    save_scope_as = player_faith
+                }
+            }
+            # send a good message if the heresy is player's faith
+            if = {
+                limit = {
+                    scope:player_faith = scope:heresy
+                }
+                send_interface_message = {
+                    type = event_heretic_stronghold_good
+                    title = HERETICS_SPAWNED
+                    desc = HERETICS_SPAWNED_DESC
+                    show_as_tooltip = {
+                        scope:heretic_county = { set_county_faith = scope:heresy }
+                    }
+                }
+            }
+            # send a bad message if the heresy is not the player's faith and they consider it hostile or evil
+            else_if = {
+                limit = {
+                    NOT = { scope:player_faith = scope:heresy }
+                    scope:player_faith = {
+                        faith_hostility_level = {
+                            target = scope:heresy
+                            value >= 2
+                        }
+                    }
+                }
+                send_interface_message = {
+                    type = event_heretic_stronghold_bad
+                    title = HERETICS_SPAWNED
+                    desc = HERETICS_SPAWNED_DESC
+                    show_as_tooltip = {
+                        scope:heretic_county = { set_county_faith = scope:heresy }
+                    }
+                }
+            }
+            # send a neutral message if the heresy is astray
+            else_if = {
+                limit = {
+                    NOT = { scope:player_faith = scope:heresy }
+                    scope:player_faith = {
+                        faith_hostility_level = {
+                            target = scope:heresy
+                            value = 1
+                        }
+                    }
+                }
+                send_interface_message = {
+                    type = event_heretic_stronghold_neutral
+                    title = HERETICS_SPAWNED
+                    desc = HERETICS_SPAWNED_DESC
+                    show_as_tooltip = {
+                        scope:heretic_county = { set_county_faith = scope:heresy }
                     }
                 }
             }

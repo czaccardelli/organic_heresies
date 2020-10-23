@@ -1,0 +1,5 @@
+﻿heretic_stronghold_county_resistance_modifier_value = {
+    value = 0
+    subtract = court_chaplain_conversion_base_total
+    multiply = 0.75
+}

@@ -1,0 +1,31 @@
+﻿### Message SFX
+@default_msg_soundeffect = "event:/SFX/UI/Notifications/Messages/sfx_ui_message_theme_neutral"
+@msg_neutral_soundeffect = "event:/SFX/UI/Notifications/Messages/sfx_ui_message_theme_neutral"
+@msg_good_soundeffect = "event:/SFX/UI/Notifications/Messages/sfx_ui_message_theme_positive"
+@msg_bad_soundeffect = "event:/SFX/UI/Notifications/Messages/sfx_ui_message_theme_negative"
+
+event_heretic_stronghold_neutral = {
+	icon = "heresy.dds"
+	title = event_message_title
+	desc = event_message_effect_and_text
+	tooltip = send_interface_message_tooltip
+	soundeffect = @msg_neutral_soundeffect
+}
+
+event_heretic_stronghold_bad = {
+	icon = "heresy.dds"
+	title = event_message_title
+	desc = event_message_effect_and_text
+	tooltip = send_interface_message_tooltip
+	style = bad
+	soundeffect = @msg_bad_soundeffect
+}
+
+event_heretic_stronghold_good = {
+	icon = "heresy.dds"
+	title = event_message_title
+	desc = event_message_effect_and_text
+	tooltip = send_interface_message_tooltip
+	style = good
+	soundeffect = @msg_good_soundeffect
+}

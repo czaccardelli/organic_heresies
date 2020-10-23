@@ -1,0 +1,3 @@
+﻿heretic_stronghold_modifier = {
+    icon = learning_negative
+}

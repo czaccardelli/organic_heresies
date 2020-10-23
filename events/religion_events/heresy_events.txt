@@ -1,11 +1,10 @@
-namespace = heresy
+﻿namespace = heresy
 
 # to override base heresy events and call organic ones instead
 heresy.0001 = {
     hidden = yes
     scope = faith
     immediate = {
-        debug_log = "CHRISTIAN HERETICS!!!"
         trigger_event = {
             id = organic_heresy.0001
             days = 1
