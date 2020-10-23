@@ -505,23 +505,18 @@ organic_heresy.0010 = {
 organic_heresy.0011 = {
     hidden = yes
     scope = faith
-
     trigger = {
         # already checked in faith_heresy_spread_pulse
         always = yes
     }
 
     immediate = {
-        every_province = {
+        every_county = {
             limit = {
-                this = {
-                    county = {
-                        has_county_modifier = heretic_stronghold_modifier
-                    }
-                }
+                has_county_modifier = heretic_stronghold_modifier
             }
             this = { save_scope_as = heretic_stronghold }
-            every_province = {
+            random_province = {
                 limit = {
                     # don't convert provinces that are already owned by the heretics
                     NOT = { faith = root }
@@ -536,54 +531,53 @@ organic_heresy.0011 = {
                         }
                     }
                 }
-                add_to_list = potential_heretic_provinces
-            }
-        }
-        random_in_list = {
-            list = potential_heretic_provinces
-            weight = {
-                base = 100
-                # counties with a faith with low fervor are more susceptible
-                modifier = {
-                    add = {
-                        value = faith.fervor
-                        multiply = -1
+                weight = {
+                    base = 100
+                    # counties with a faith with low fervor are more susceptible
+                    modifier = {
+                        add = {
+                            value = faith.fervor
+                            multiply = -1
+                        }
+                        always = yes
                     }
-                    always = yes
-                }
-                # low-control counties are more susceptible to heresy
-                modifier = {
-                    factor = 2
-                    county = { county_control < 50 }
-                }
-                modifier = {
-                    factor = 2
-                    county = { county_control < 10 }
-                }
-                # counties held by sinful rulers are more susceptible
-                modifier = {
-                    factor = {
-                        add = county.holder.sinfulness_multiplier
+                    # low-control counties are more susceptible to heresy
+                    modifier = {
+                        factor = 2
+                        county = { county_control < 50 }
                     }
-                }
-                # counties with sinful court chaplains are more susceptible
-                modifier = {
-                    factor = {
-                        add = county.holder.cp:councillor_court_chaplain.sinfulness_multiplier
+                    modifier = {
+                        factor = 2
+                        county = { county_control < 10 }
+                    }
+                    # counties held by sinful rulers are more susceptible
+                    modifier = {
+                        factor = {
+                            add = county.holder.sinfulness_multiplier
+                        }
+                    }
+                    # counties with sinful court chaplains are more susceptible
+                    modifier = {
+                        factor = {
+                            add = county.holder.cp:councillor_court_chaplain.sinfulness_multiplier
+                        }
                     }
                 }
-            }
-            this = {
-                county = {
-                    set_county_faith = root
-                    save_scope_as = heretic_county
+                random = {
+                    chance = scope:heretic_stronghold.faith.fervor_effect_on_heresy_spread_chance_value
+                    this = {
+                        county = {
+                            set_county_faith = root
+                            save_scope_as = heretic_county
+                        }
+                    }
+                    scope:heretic_county = {
+                        trigger_event = {
+                            id = organic_heresy.1000
+                            days = 1
+                        }
+                    }
                 }
-            }
-        }
-        scope:heretic_county = {
-            trigger_event = {
-                id = organic_heresy.1000
-                days = 1
             }
         }
     }

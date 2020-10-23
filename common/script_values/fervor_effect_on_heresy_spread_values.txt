@@ -1,0 +1,9 @@
+﻿base_chance_of_heresy_spread_value = 3
+
+fervor_effect_on_heresy_spread_chance_value = {
+    # linear effect on chance based on fervor with 100% fervor giving full base chance and 0% fervor giving 0% chance
+    value = 0
+    add = fervor
+    multiply = base_chance_of_heresy_spread_value
+    divide = define:NReligion|MAX_FERVOR
+}

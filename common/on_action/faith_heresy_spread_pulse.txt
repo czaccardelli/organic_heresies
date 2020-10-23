@@ -14,14 +14,8 @@ faith_heresy_spread_pulse = {
             }
         }
     }
-    random_events = {
-        chance_to_happen = 50 #3 # ~31% chance to happen at least once per year
-        chance_of_no_event = {
-            value = 100
-            # low fervor in the heresy will lower chance of heresy spread from heretic strongholds
-            subtract = fervor
-        }
-        100 = organic_heresy.0011
+    events = {
+        organic_heresy.0011
     }
         
 }
