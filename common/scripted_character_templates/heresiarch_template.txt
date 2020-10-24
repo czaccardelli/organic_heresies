@@ -1,4 +1,4 @@
-# root is county scope
+﻿# root is county scope
 heresiarch_template = {
     age = { 20 50 }
     dynasty = none

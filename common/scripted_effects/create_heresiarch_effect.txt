@@ -1,13 +1,18 @@
 ﻿create_heresiarch_effect = {
-    create_character = {
-        location = $STRONGHOLD_COUNTY$
-        template = { $STRONGHOLD_COUNTY$ = { heresiarch_template } }
-        save_scope_as = new_heresiarch
+    $STRONGHOLD_COUNTY$ = {
+        save_scope_as = stronghold
+    }
+    scope:stronghold = {
+        create_character = {
+            location = scope:stronghold
+            template = heresiarch_template
+            save_scope_as = new_heresiarch
+        }
     }
     scope:new_heresiarch = {
         set_variable = {
             name = heresiarch_stronghold
-            value = $STRONGHOLD_COUNTY$
+            value = scope:stronghold
         }
     }
 }
