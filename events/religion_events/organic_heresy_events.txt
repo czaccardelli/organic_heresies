@@ -514,6 +514,7 @@ organic_heresy.0011 = {
         every_county = {
             limit = {
                 has_county_modifier = heretic_stronghold_modifier
+                faith = root
             }
             this = { save_scope_as = heretic_stronghold }
             random_province = {
