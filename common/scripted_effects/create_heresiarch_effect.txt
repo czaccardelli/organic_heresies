@@ -1,4 +1,4 @@
-create_heresiarch_effect = {
+﻿create_heresiarch_effect = {
     create_character = {
         location = $STRONGHOLD_COUNTY$
         template = { $STRONGHOLD_COUNTY$ = { heresiarch_template } }

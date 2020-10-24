@@ -309,7 +309,7 @@ organic_heresy.0010 = {
     }
     immediate = {
         scope:heretic_stronghold.county = {
-            create_heresiarch_effect = { STRONGHOLD_COUNTY = this }
+            create_heresiarch_effect = { STRONGHOLD_COUNTY = scope:heretic_stronghold.county }
             # create the heretic stronghold
             set_county_faith = scope:heresy
             # adjust fervor
