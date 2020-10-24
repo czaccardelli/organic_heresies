@@ -312,7 +312,7 @@ organic_heresy.0010 = {
             # create the heretic stronghold
             set_county_faith = scope:heresy
             # adjust fervor
-            scope:original_faith = { change_fervor = 15 }
+            scope:original_faith = { change_fervor = 20 }
             add_county_modifier = { modifier = heretic_stronghold_modifier }
             # send interface message about heretic stronghold (placeholder)
             every_player = {
@@ -415,7 +415,7 @@ organic_heresy.0010 = {
                     chance = 50
                     set_county_faith = scope:heresy
                     # adjust fervor
-                    scope:original_faith = { change_fervor = 5 }
+                    scope:original_faith = { change_fervor = 7 }
                     # send notifications to players about converted counties
                     every_player = {
 #                        limit = {
@@ -517,20 +517,16 @@ organic_heresy.0011 = {
                 faith = root
             }
             this = { save_scope_as = heretic_stronghold }
-            random_province = {
+            random_county = {
                 limit = {
                     # don't convert provinces that are already owned by the heretics
                     NOT = { faith = root }
                     squared_distance = {
-                        target = scope:heretic_stronghold
+                        target = prev
                         value < squared_distance_large
                     }
                     # make sure the county has heretic neighbors to stop 'islands' from forming and to maintain a good spread pattern
-                    this = {
-                        county = {
-                            any_neighboring_county = { faith = root }
-                        }
-                    }
+                    any_neighboring_county = { faith = root }
                 }
                 weight = {
                     base = 100
@@ -545,27 +541,27 @@ organic_heresy.0011 = {
                     # low-control counties are more susceptible to heresy
                     modifier = {
                         factor = 2
-                        county = { county_control < 50 }
+                        county_control < 50
                     }
                     modifier = {
                         factor = 2
-                        county = { county_control < 10 }
+                        county_control < 10
                     }
                     # counties held by sinful rulers are more susceptible
                     modifier = {
                         factor = {
-                            add = county.holder.sinfulness_multiplier
+                            add = holder.sinfulness_multiplier
                         }
                     }
                     # counties with sinful court chaplains are more susceptible
                     modifier = {
                         factor = {
-                            add = county.holder.cp:councillor_court_chaplain.sinfulness_multiplier
+                            add = holder.cp:councillor_court_chaplain.sinfulness_multiplier
                         }
                     }
                 }
                 random = {
-                    chance = scope:heretic_stronghold.faith.fervor_effect_on_heresy_spread_chance_value
+                    chance = prev.faith.fervor_effect_on_heresy_spread_chance_value
                     this = {
                         county = {
                             set_county_faith = root
