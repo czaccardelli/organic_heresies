@@ -309,6 +309,7 @@ organic_heresy.0010 = {
     }
     immediate = {
         scope:heretic_stronghold.county = {
+            create_heresiarch_effect = { STRONGHOLD_COUNTY = this }
             # create the heretic stronghold
             set_county_faith = scope:heresy
             # adjust fervor
@@ -335,67 +336,67 @@ organic_heresy.0010 = {
 #                                }
 #                            }
 #                        }
-            this = {
-                save_scope_as = current_player
-                faith = {
-                    save_scope_as = player_faith
-                }
-            }
-            # send a good message if the heresy is player's faith
-            if = {
-                limit = {
-                    scope:player_faith = scope:heresy
-                }
-                send_interface_message = {
-                    type = event_heretic_stronghold_good
-                    title = HERETIC_STRONGHOLD_SPAWNED
-                    desc = HERETIC_STRONGHOLD_SPAWNED_DESC
-                    show_as_tooltip = {
-                        prev = { set_county_faith = scope:heresy }
+                this = {
+                    save_scope_as = current_player
+                    faith = {
+                        save_scope_as = player_faith
                     }
                 }
-            }
-            # send a bad message if the heresy is not the player's faith and they consider it hostile or evil
-            else_if = {
-                limit = {
-                    NOT = { scope:player_faith = scope:heresy }
-                    scope:player_faith = {
-                        faith_hostility_level = {
-                            target = scope:heresy
-                            value >= 2
+                # send a good message if the heresy is player's faith
+                if = {
+                    limit = {
+                        scope:player_faith = scope:heresy
+                    }
+                    send_interface_message = {
+                        type = event_heretic_stronghold_good
+                        title = HERETIC_STRONGHOLD_SPAWNED
+                        desc = HERETIC_STRONGHOLD_SPAWNED_DESC
+                        show_as_tooltip = {
+                            prev = { set_county_faith = scope:heresy }
                         }
                     }
                 }
-                send_interface_message = {
-                    type = event_heretic_stronghold_bad
-                    title = HERETIC_STRONGHOLD_SPAWNED
-                    desc = HERETIC_STRONGHOLD_SPAWNED_DESC
-                    show_as_tooltip = {
-                        prev = { set_county_faith = scope:heresy }
+                # send a bad message if the heresy is not the player's faith and they consider it hostile or evil
+                else_if = {
+                    limit = {
+                        NOT = { scope:player_faith = scope:heresy }
+                        scope:player_faith = {
+                            faith_hostility_level = {
+                                target = scope:heresy
+                                value >= 2
+                            }
+                        }
                     }
-                }
-            }
-            # send a neutral message if the heresy is astray
-            else_if = {
-                limit = {
-                    NOT = { scope:player_faith = scope:heresy }
-                    scope:player_faith = {
-                        faith_hostility_level = {
-                            target = scope:heresy
-                            value = 1
+                    send_interface_message = {
+                        type = event_heretic_stronghold_bad
+                        title = HERETIC_STRONGHOLD_SPAWNED
+                        desc = HERETIC_STRONGHOLD_SPAWNED_DESC
+                        show_as_tooltip = {
+                            prev = { set_county_faith = scope:heresy }
                         }
                     }
                 }
-                send_interface_message = {
-                    type = event_heretic_stronghold_neutral
-                    title = HERETIC_STRONGHOLD_SPAWNED
-                    desc = HERETIC_STRONGHOLD_SPAWNED_DESC
-                    show_as_tooltip = {
-                        prev = { set_county_faith = scope:heresy }
+                # send a neutral message if the heresy is astray
+                else_if = {
+                    limit = {
+                        NOT = { scope:player_faith = scope:heresy }
+                        scope:player_faith = {
+                            faith_hostility_level = {
+                                target = scope:heresy
+                                value = 1
+                            }
+                        }
+                    }
+                    send_interface_message = {
+                        type = event_heretic_stronghold_neutral
+                        title = HERETIC_STRONGHOLD_SPAWNED
+                        desc = HERETIC_STRONGHOLD_SPAWNED_DESC
+                        show_as_tooltip = {
+                            prev = { set_county_faith = scope:heresy }
+                        }
                     }
                 }
             }
-        }
             # chance to convert neighboring counties
             every_neighboring_county = {
                 # don't convert head of faith's land
