@@ -2,10 +2,14 @@
     $STRONGHOLD_COUNTY$ = {
         save_scope_as = stronghold
     }
+    $STRONGHOLD_FAITH$ = {
+        save_scope_as = stronghold_faith
+    }
     scope:stronghold = {
         create_character = {
             location = scope:stronghold
             template = heresiarch_template
+            faith = scope:stronghold_faith
             save_scope_as = new_heresiarch
         }
     }

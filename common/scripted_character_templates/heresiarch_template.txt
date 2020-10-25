@@ -2,7 +2,6 @@
 heresiarch_template = {
     age = { 20 50 }
     dynasty = none
-    faith = root.faith
     culture = root.culture
     gender_female_chance = root_faith_clergy_gender_female_chance 
     trait = heresiarch

@@ -260,6 +260,8 @@ organic_heresy.0001 = {
                         faith = scope:original_faith
                         # don't pick provinces that already belong to the heresy...
                         NOT = { faith = scope:heresy }
+                        # don't pick provinces that don't border other provinces (i.e. islands)
+                        county = { any_neighboring_county { always = yes } }
                     }
                     weight = {
                         base = 100
@@ -309,7 +311,10 @@ organic_heresy.0010 = {
     }
     immediate = {
         scope:heretic_stronghold.county = {
-            create_heresiarch_effect = { STRONGHOLD_COUNTY = scope:heretic_stronghold.county }
+            create_heresiarch_effect = {
+                STRONGHOLD_COUNTY = scope:heretic_stronghold.county
+                STRONGHOLD_FAITH = scope:heresy
+            }
             # create the heretic stronghold
             set_county_faith = scope:heresy
             # adjust fervor
