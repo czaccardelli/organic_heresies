@@ -1,6 +1,13 @@
 ﻿namespace = organic_heresy
 
-# finds a base province to convert to a heresy
+scripted_trigger nearby_county_of_faith = {
+	any_in_list = {
+		list = nearby_same_religion_provinces
+		faith = prev
+	}
+}
+
+# finds a base province to convert to a heresy (Abrahamic)
 organic_heresy.0001 = {
     hidden = yes
     scope = faith
@@ -302,6 +309,179 @@ organic_heresy.0001 = {
         }
     }
 }
+
+# finds a base province to convert to a heresy (Eastern)
+organic_heresy.0005 = {
+    hidden = yes
+    scope = faith
+
+    trigger = {
+		OR = {
+			has_doctrine = eastern_hostility_doctrine
+			NOT = { has_doctrine = heresy_hostility_doctrine } # exclude zoroastrians
+		}        
+    }
+
+    immediate = {
+        save_scope_as = original_faith
+
+        # compile a list of eastern religions that can contain heretical faiths
+        religion:buddhism_religion = {
+            add_to_list = eastern_religions
+        }
+        religion:hinduism_religion = {
+            add_to_list = eastern_religions
+        }
+        religion:jainism_religion = {
+            add_to_list = eastern_religions
+        }
+        religion:dualism_religion = {
+            add_to_list = eastern_religions
+        }
+
+        every_in_list = {
+            list = eastern_religions
+            every_faith = {
+                add_to_list = eastern_faiths
+            }
+        }
+
+        # pick a ruler whose province will be the heretic stronghold
+        random_ruler = {
+            limit = {
+                OR = {
+                    # head of faith's lands can't spawn a heretic stronghold
+                    NOT = {
+                        exists = scope:original_faith.religious_head
+                    }
+                    AND = {
+                        exists = scope:original_faith.religious_head
+                        NOT = { this = scope:original_faith.religious_head }
+                    }
+                }
+                faith = scope:original_faith
+            }
+            weight = {
+                base = 100
+
+                # more likely to spawn in ruler's realm with a sinful chaplain
+                modifier = {
+                    exists = cp:councillor_court_chaplain
+                    factor = {
+                        add = cp:councillor_court_chaplain.sinfulness_multiplier
+                    }
+                }
+
+                # a bit more likely to spawn in ruler's realm with a sinful ruler
+                modifier = {
+                    factor = {
+                        add = sinfulness_multiplier
+                        divide = 2
+                    }
+                }
+            }
+            # pick a base province to be converted from ruler's realm
+            this = {
+                random_realm_province = {
+                    limit = {
+                        faith = scope:original_faith
+                        # don't pick provinces that don't border other provinces (i.e. islands)
+                        county = { any_neighboring_county = { always = yes } }
+                    }
+                    weight = {
+                        base = 100
+
+                        # more likely to pick provinces in counties with lower control
+
+                        modifier = {
+                            factor = 2
+                            county = { county_control < 50 }
+                        }
+
+                        modifier = {
+                            factor = 2
+                            county = { county_control < 10 }
+                        }
+                    }
+                    save_scope_as = heretic_stronghold
+
+
+                }
+            }
+        }
+        # save a list of provinces in our religion group
+        every_province = {
+            limit = {
+                is_county_capital = yes
+                faith.religion = { is_in_list = eastern_religions }
+                squared_distance = {
+                    target = scope:heretic_stronghold
+                    value < squared_distance_medium
+                }
+            }
+            add_to_list = nearby_same_religion_provinces
+        }          
+
+        # pick a heresy to convert provinces to
+		#We want to pick certain faiths to be our heresy over others, assuming they are valid.
+		random_in_list = {
+			list = eastern_faiths
+			# Priority 1: Any nearby heretical faith with followers
+			alternative_limit = {
+				num_county_followers > 0
+				is_valid_heresy = {
+					ORIGIN_FAITH = root
+					HERETICAL_FAITH = this
+				}
+                nearby_county_of_faith = yes
+			}
+			# Priority 2: Any non-existant heretical faith
+			alternative_limit = {
+				num_county_followers = 0
+				is_valid_heresy = {
+					ORIGIN_FAITH = root
+					HERETICAL_FAITH = this
+				}
+			}
+			# Priority 3: Any valid heretical faith
+			alternative_limit = {
+				is_valid_heresy = {
+					ORIGIN_FAITH = root
+					HERETICAL_FAITH = this
+				}
+			}
+			# Priority 4: Any faith.
+			alternative_limit = {
+				always = yes
+			}
+			weight = {
+				base = 50
+
+                # more likely to pick nearby faiths
+                modifier = {
+                    factor = 2
+                    nearby_county_of_faith = yes
+                }
+
+				# More likely to pick faiths that currently exist.
+				modifier = {
+					factor = 2
+					num_county_followers > 0
+				}
+			}
+			save_scope_as = heresy
+		}
+
+        # trigger the heresy province conversion event
+        scope:heretic_stronghold = {
+            trigger_event = {
+                id = organic_heresy.0010
+                days = 3
+            }
+        }
+    }
+}
+
 # converts nearby provinces to the heresy and sends messages
 organic_heresy.0010 = {
     scope = province
