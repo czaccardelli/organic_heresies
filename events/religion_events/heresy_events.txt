@@ -16,9 +16,9 @@ heresy.0005 = {
     hidden = yes
     scope = faith
     immediate = {
-        #trigger_event = {
-        #    id = organic_heresy.0001
-        #    days = 1
-        #}    
+        trigger_event = {
+            id = organic_heresy.0005
+            days = 1
+        }    
     }
 }
