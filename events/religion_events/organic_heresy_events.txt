@@ -24,6 +24,9 @@ organic_heresy.0001 = {
         # Compile a list of possible heresies to convert to.
         religion = {
             every_faith = {
+                limit = {
+                    this.religion = scope:original_faith.religion
+                }
                 add_to_list = potential_heresies
             }
             if = {
