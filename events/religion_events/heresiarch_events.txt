@@ -1,0 +1,66 @@
+﻿# a new heresiarch appears
+heresiarch.0001 = {
+    type = character_event
+    title = heresiarch.0001.t
+    desc = heresiarch.0001.desc
+
+    theme = faith
+
+    left_portrait = {
+        character = new_heresiarch
+        animation = personality_bold
+    }
+    override_background = { event_background = alley_day }
+
+    scope:new_heresiarch.var:stronghold = { save_scope_as = stronghold }
+
+    immediate = {
+        show_as_tooltip = {
+            scope:stronghold = {
+                set_county_faith = scope:new_heresiarch.faith
+                add_county_modifier = { modifier = heretic_stronghold_modifier }
+            }
+        }
+    }
+
+    option = {
+        name = heresiarch.0001.a
+
+        ai_chance = {
+            base = 100
+        }
+    }
+}
+
+# the heresiarch dies
+heresiarch.0002 = {
+    type = character_event
+    title = heresiarch.0002.t
+    desc = heresiarch.0002.desc
+
+    theme = death
+
+    save_scope_as = dead_heresiarch
+    left_portrait = {
+        character = dead_heresiarch
+    }
+    override_background = { event_background = alley_night }
+
+    scope:dead_heresiarch.var:stronghold = { save_scope_as = stronghold }
+
+    immediate = {
+        show_as_tooltip = {
+            scope:stronghold = {
+                remove_county_modifier = { modifier = heretic_stronghold_modifier }
+            }
+        }
+    }
+
+    option = {
+        name = heresiarch.0002.a
+
+        ai_chance = {
+            base = 100
+        }
+    }
+}

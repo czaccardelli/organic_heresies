@@ -487,7 +487,7 @@ organic_heresy.0005 = {
     }
 }
 
-# converts nearby provinces to the heresy and sends messages
+# converts nearby provinces to the heresy, changes fervor, creates heresiarch, and sends messages
 organic_heresy.0010 = {
     scope = province
     hidden = yes
@@ -495,16 +495,23 @@ organic_heresy.0010 = {
         exists = scope:heretic_stronghold
     }
     immediate = {
+        # create the heresiarch
         scope:heretic_stronghold.county = {
             create_heresiarch_effect = {
                 STRONGHOLD_COUNTY = scope:heretic_stronghold.county
                 STRONGHOLD_FAITH = scope:heresy
             }
+            every_player = {
+                limit = { faith = original_faith }
+                trigger_event = {
+                    id = heresiarch.0001
+                }
+            }
             # create the heretic stronghold
             set_county_faith = scope:heresy
+            add_county_modifier = { modifier = heretic_stronghold_modifier }
             # adjust fervor
             scope:original_faith = { change_fervor = 20 }
-            add_county_modifier = { modifier = heretic_stronghold_modifier }
             # send interface message about heretic stronghold (placeholder)
             every_player = {
 #                        limit = {

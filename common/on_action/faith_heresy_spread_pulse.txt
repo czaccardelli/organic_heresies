@@ -16,6 +16,28 @@ faith_heresy_spread_pulse = {
     }
     events = {
         organic_heresy.0011
+    }    
+}
+
+on_death = {
+    on_actions = {
+        on_heresiarch_death
     }
-        
+}
+
+on_heresiarch_death = {
+    var:heresiarch_stronghold = { save_scope_as = heretic_stronghold }
+    effect = {
+        scope:heretic_stronghold = {
+            if = {
+                limit = {
+                    has_county_modifier = heretic_stronghold_modifier
+                }
+                remove_county_modifier = heretic_stronghold_modifier
+            }
+        }
+    }
+    events = {
+        heresiarch.0002
+    }
 }
