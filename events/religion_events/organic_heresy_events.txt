@@ -319,10 +319,8 @@ organic_heresy.0005 = {
     scope = faith
 
     trigger = {
-		OR = {
 			has_doctrine = eastern_hostility_doctrine
-			NOT = { has_doctrine = heresy_hostility_doctrine } # exclude zoroastrians
-		}        
+			NOT = { has_doctrine = heresy_hostility_doctrine } # exclude zoroastrians     
     }
 
     immediate = {
