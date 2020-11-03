@@ -272,6 +272,8 @@ organic_heresy.0001 = {
                         NOT = { faith = scope:heresy }
                         # don't pick provinces that don't border other provinces (i.e. islands)
                         county = { any_neighboring_county = { always = yes } }
+                        # don't convert holy sites
+                        NOT = { is_holy_site_of = scope:original_faith }
                     }
                     weight = {
                         base = 100
@@ -388,6 +390,8 @@ organic_heresy.0005 = {
                         faith = scope:original_faith
                         # don't pick provinces that don't border other provinces (i.e. islands)
                         county = { any_neighboring_county = { always = yes } }
+                        # don't convert holy sites
+                        NOT = { is_holy_site_of = scope:original_faith }
                     }
                     weight = {
                         base = 100
@@ -596,6 +600,8 @@ organic_heresy.0010 = {
                     }
                     # don't convert neighboring counties if they aren't part of the original religion
                     faith = scope:original_faith
+                    # don't convert holy sites
+                    NOT = { is_holy_site_of = scope:original_faith }
                 }
                 this = { save_scope_as = heretic_county }
                 random = {
@@ -714,6 +720,8 @@ organic_heresy.0011 = {
                     }
                     # make sure the county has heretic neighbors to stop 'islands' from forming and to maintain a good spread pattern
                     any_neighboring_county = { faith = root }
+                    # don't convert holy sites
+                    NOT = { is_holy_site_of = root }
                 }
                 weight = {
                     base = 100
