@@ -721,7 +721,9 @@ organic_heresy.0011 = {
                     # make sure the county has heretic neighbors to stop 'islands' from forming and to maintain a good spread pattern
                     any_neighboring_county = { faith = root }
                     # don't convert holy sites
-                    NOT = { is_holy_site_of = root }
+                    any_faith = {
+                        NOT = { is_holy_site_of = this }
+                    }
                 }
                 weight = {
                     base = 100
