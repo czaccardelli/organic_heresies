@@ -64,3 +64,14 @@ heresiarch.0002 = {
         }
     }
 }
+
+# the heresiarch moves to a new county
+heresiarch.0003 = {
+    hidden = yes
+
+}
+
+# heresiarch re-establishes stronghold
+heresiarch.1000 = {
+
+}

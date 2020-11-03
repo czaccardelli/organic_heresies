@@ -1,0 +1,93 @@
+﻿# called in addition to base on_faith_monthly actions in common/on_action/religion_on_action
+on_faith_monthly = {
+	on_actions = {
+		faith_heresy_spread_pulse
+	}	
+}
+
+on_county_faith_change = {
+    on_actions = {
+        on_heresiarch_converted_county
+        on_heretic_stronghold_faith_change
+    }
+}
+
+faith_heresy_spread_pulse = {
+    trigger = {
+        any_province = {
+            county = {
+                has_county_modifier = heretic_stronghold_modifier
+                faith = root
+            }
+        }
+    }
+    events = {
+        organic_heresy.0011
+    }    
+}
+
+on_death = {
+    on_actions = {
+        on_heresiarch_death
+    }
+}
+
+on_heresiarch_death = {
+    var:heresiarch_stronghold = { save_scope_as = heretic_stronghold }
+    effect = {
+        scope:heretic_stronghold = {
+            if = {
+                limit = {
+                    has_county_modifier = heretic_stronghold_modifier
+                }
+                remove_county_modifier = heretic_stronghold_modifier
+            }
+        }
+    }
+    events = {
+        heresiarch.0002
+    }
+}
+
+on_heresiarch_converted_county = {
+    trigger = {
+        # TODO: come up with better way to identify heresiarchs who've converted a province...
+        any_county_province = {
+            any_pool_character = {
+                has_trait = heresiarch
+                province = prev
+                faith = root.faith
+            }
+        }
+    }
+    events = {
+        id = heresiarch.0003
+        days = { 3 5 }
+    }
+}
+
+on_heretic_stronghold_faith_change = {
+    trigger = {
+        has_county_modifier = heretic_stronghold_modifier
+    }
+    effect = {
+        if = {
+            limit = {
+                any_pool_character = {
+                    has_trait = heresiarch
+                    AND = {
+                        exists = var:heresiarch_stronghold
+                        this = { var:heresiarch_stronghold = root }
+                    }
+                }
+            }
+            trigger_event = {
+                id = heresiarch.1000
+                days = { 3 5 }
+            }
+        }
+        else = {
+            remove_county_modifier = heretic_stronghold_modifier
+        }
+    }
+}
