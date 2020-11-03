@@ -1,0 +1,6 @@
+﻿heresiarch = {
+    base = pool_character
+    conditions = {
+        has_trait = heresiarch
+    }
+}

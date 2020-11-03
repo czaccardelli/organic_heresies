@@ -1,0 +1,9 @@
+﻿valid_heresiarch_trigger = {
+    any_county_province = {
+        any_pool_character = {
+            has_trait = heresiarch
+            province = prev
+            faith = root.faith
+        }
+    }
+}

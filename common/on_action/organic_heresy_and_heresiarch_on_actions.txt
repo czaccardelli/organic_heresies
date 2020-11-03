@@ -5,9 +5,10 @@ on_faith_monthly = {
 	}	
 }
 
+# called in addition to base on_county_faith_change actions in common/on_action/county_on_actions
 on_county_faith_change = {
     on_actions = {
-        on_heresiarch_converted_county
+        on_county_with_heresiarch_converted
         on_heretic_stronghold_faith_change
     }
 }
@@ -19,6 +20,12 @@ faith_heresy_spread_pulse = {
                 has_county_modifier = heretic_stronghold_modifier
                 faith = root
             }
+        }
+    }
+    effect = {
+        every_heresiarch = {
+            limit = { faith = root }
+            heresiarch_county_conversion_tick_effect
         }
     }
     events = {
@@ -49,20 +56,12 @@ on_heresiarch_death = {
     }
 }
 
-on_heresiarch_converted_county = {
+on_county_with_heresiarch_converted = {
     trigger = {
-        # TODO: come up with better way to identify heresiarchs who've converted a province...
-        any_county_province = {
-            any_pool_character = {
-                has_trait = heresiarch
-                province = prev
-                faith = root.faith
-            }
-        }
+        valid_heresiarch_trigger = yes
     }
     events = {
-        id = heresiarch.0003
-        days = { 3 5 }
+        heresiarch.2000
     }
 }
 

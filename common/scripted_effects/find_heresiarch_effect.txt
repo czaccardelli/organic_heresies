@@ -1,0 +1,19 @@
+﻿# finds a heresiarch in a province
+# root is a county
+find_heresiarch_effect = {
+    every_county_province = {
+        every_pool_character = {
+            limit = {
+                has_trait = heresiarch
+                province = prev
+                faith = root.faith
+            }
+            add_to_list = heresiarchs
+        }
+    }
+    # should only be one heresiarch found, but you never know...
+    random_in_list = {
+        list = heresiarchs
+        save_scope_as = heresiarch
+    }
+}

@@ -1,0 +1,26 @@
+﻿heresiarch_begin_converting_county_effect = {
+    save_scope_as = heresiarch
+    set_variable = {
+        # when currently_converting reaches 100 it will flip the county to the heresiarch's faith
+        name = converting_county
+        value = 0
+    }
+}
+
+heresiarch_county_conversion_tick_effect = {
+    if = {
+        limit = {
+            exists = var:converting_county
+        }
+        change_variable = {
+            name = converting_county
+            value = heresiarch_county_conversion_uptick_value
+        }
+    }
+    if = {
+        limit = {
+            var:converting_county >= 100
+        }
+        set_county_faith = root.faith
+    }
+}

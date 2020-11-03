@@ -65,13 +65,45 @@ heresiarch.0002 = {
     }
 }
 
-# the heresiarch moves to a new county
-heresiarch.0003 = {
-    hidden = yes
-
-}
-
 # heresiarch re-establishes stronghold
 heresiarch.1000 = {
+    hidden = yes
+    scope = county
 
+    immediate = {
+
+    }
+}
+
+# trigger a move for every heresiarch of the new faith in the county (should generally only be one, but you never know)
+heresiarch.2000 = {
+    scope = county
+    hidden = yes
+
+    immediate = {
+        every_province_in_county = {
+            every_heresiarch = {
+                limit = {
+                    province = prev
+                    faith = root.faith
+                }
+                trigger_event = {
+                    id = heresiarch.2001
+                    days = { 3 5 }
+                }
+            }
+        }
+    }
+}
+# moves a heresiarch to a random new valid province
+heresiarch.2001 = {
+    scope = character
+    hidden = yes
+
+    save_scope_as = moving_heresiarch
+
+    immediate = {
+        move_heresiarch_effect = yes
+        heresiarch_begin_converting_county_effect = yes
+    }
 }
