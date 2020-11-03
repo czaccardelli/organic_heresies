@@ -8,7 +8,7 @@ on_faith_monthly = {
 # called in addition to base on_county_faith_change actions in common/on_action/county_on_actions
 on_county_faith_change = {
     on_actions = {
-        on_county_with_heresiarch_converted
+        on_county_with_heresiarch_faith_change
         on_heretic_stronghold_faith_change
     }
 }
@@ -28,9 +28,9 @@ faith_heresy_spread_pulse = {
             heresiarch_county_conversion_tick_effect
         }
     }
-    events = {
-        organic_heresy.0011
-    }    
+    #events = {
+    #    organic_heresy.0011
+    #}    
 }
 
 on_death = {
@@ -56,7 +56,7 @@ on_heresiarch_death = {
     }
 }
 
-on_county_with_heresiarch_converted = {
+on_county_with_heresiarch_faith_change = {
     trigger = {
         valid_heresiarch_trigger = yes
     }
@@ -68,25 +68,15 @@ on_county_with_heresiarch_converted = {
 on_heretic_stronghold_faith_change = {
     trigger = {
         has_county_modifier = heretic_stronghold_modifier
+        any_heresiarch = {
+            faith = scope:old_faith
+            AND = {
+                has_variable = heresiarch_stronghold
+                this = { var:heresiarch_stronghold = root }
+            }
+        }
     }
-    effect = {
-        if = {
-            limit = {
-                any_pool_character = {
-                    has_trait = heresiarch
-                    AND = {
-                        exists = var:heresiarch_stronghold
-                        this = { var:heresiarch_stronghold = root }
-                    }
-                }
-            }
-            trigger_event = {
-                id = heresiarch.1000
-                days = { 3 5 }
-            }
-        }
-        else = {
-            remove_county_modifier = heretic_stronghold_modifier
-        }
+    events = {
+        heresiarch.1000
     }
 }

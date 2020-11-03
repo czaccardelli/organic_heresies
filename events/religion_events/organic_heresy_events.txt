@@ -790,6 +790,9 @@ organic_heresy.1000 = {
     trigger = {
         always = yes
     }
+
+    save_scope_as = heretic_county
+    
     immediate = {
         scope:heretic_county.faith = { save_scope_as = heresy }
         every_player = {

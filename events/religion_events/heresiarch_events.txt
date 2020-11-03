@@ -65,20 +65,68 @@ heresiarch.0002 = {
     }
 }
 
-# heresiarch re-establishes stronghold
+# heresiarch and county lose stronghold and try to re-establish it
 heresiarch.1000 = {
     hidden = yes
-    scope = county
+    scope = landed_title
+
+    trigger = {
+        tier = tier_county
+    }
+
+    save_scope_as = stronghold
 
     immediate = {
+        if = {
+            limit = { has_county_modifier = heretic_stronghold_modifier }
+            remove_county_modifier = heretic_stronghold_modifier
+        }
+        every_heresiarch = {
+            limit = {
+                faith = scope:old_faith
+                AND = {
+                    has_variable = heresiarch_stronghold
+                    var:heresiarch_stronghold = scope:stronghold
+                }
+            }
+            remove_variable = heresiarch_stronghold
+            trigger_event = {
+                id = heresiarch.1001
+                days = { 1 3 }
+            }
+        }
+    }
+}
 
+# heresiarch surfaces to try and re-establish stronghold
+heresiarch.1001 = {
+    hidden = yes
+    scope = character
+
+    trigger = {
+        NOT = {
+            has_variable = heresiarch_stronghold
+        }
+    }
+
+    immediate = {
+        every_player = {
+            send_interface_message = {
+                type = event_generic_neutral
+                title = gffdgdfsgsfd
+            }
+        }
     }
 }
 
 # trigger a move for every heresiarch of the new faith in the county (should generally only be one, but you never know)
 heresiarch.2000 = {
-    scope = county
+    scope = landed_title
     hidden = yes
+
+    trigger = {
+        tier = tier_county
+    }
 
     immediate = {
         every_province_in_county = {

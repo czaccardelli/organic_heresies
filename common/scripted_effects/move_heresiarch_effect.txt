@@ -35,6 +35,11 @@
                 factor = 2
                 county_control < 10
             }
+            # counties with the same religion are much more susceptible
+            modifier = {
+                factor = 3
+                faith.religion = scope:moving_heresiarch.faith.religion
+            }
             modifier = {
                 factor = {
                     # counties held by sinful rulers are more susceptible
