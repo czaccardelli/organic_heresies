@@ -6,7 +6,7 @@ heresiarch_county_conversion_uptick_value = {
     value = base_heresiarch_conversion_value
     # linearly increase based on fervor difference with 100 difference = 50 value
     add = {
-        value = heresiarch.faith.fervor
+        value = faith.fervor
         subtract = location.county.faith.fervor
         min = 0
         divide = 2
@@ -19,8 +19,8 @@ heresiarch_county_conversion_uptick_value = {
     }
     # TODO: change sinfulness_multiplier to be based on sins in the county's faith, not the characters'
     multiply = {
-        add = holder.sinfulness_multiplier
-        add = holder.cp:councillor_court_chaplian.sinfulness_multiplier
+        add = location.county.holder.sinfulness_multiplier
+        add = location.county.holder.cp:councillor_court_chaplain.sinfulness_multiplier
         min = 1
     }
     divide = base_heresiarch_conversion_divisor

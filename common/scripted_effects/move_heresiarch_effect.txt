@@ -1,11 +1,11 @@
 ﻿move_heresiarch_effect = {
-    save_scope_as = moving_heresiarch
+    $HERESIARCH$ = { save_scope_as = moving_heresiarch }
     random_county = {
         limit = {
             # don't move to provinces that are already owned by the heretics
             NOT = { faith = scope:moving_heresiarch.faith }
             squared_distance = {
-                target = moving_heresiarch.location
+                target = scope:moving_heresiarch.location
                 value < squared_distance_medium
             }
             # make sure the county has heretic neighbors to stop 'islands' from forming and to maintain a good spread pattern

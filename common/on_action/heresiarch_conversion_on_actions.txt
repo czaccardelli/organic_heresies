@@ -1,0 +1,37 @@
+﻿# called in addition to base on_county_faith_change actions in common/on_action/county_on_actions
+on_county_faith_change = {
+    on_actions = {
+        on_county_with_heresiarch_faith_change
+        on_heretic_stronghold_faith_change
+    }
+}
+
+on_county_with_heresiarch_faith_change = {
+    trigger = {
+        valid_heresiarch_trigger = yes
+    }
+    events = {
+        heresiarch.2000
+    }
+}
+
+on_heretic_stronghold_faith_change = {
+    trigger = {
+        has_county_modifier = heretic_stronghold_modifier
+        any_county_province = {
+            any_pool_character = {
+                province = prev
+                # scope:old_faith is used because it's assumed that the county has converted away from heresiarch's faith already
+                faith = scope:old_faith
+                has_trait = heresiarch
+                AND = {
+                    has_variable = stronghold
+                    this = { var:stronghold.county = root }
+                }
+            }
+        }
+    }
+    events = {
+        heresiarch.1000
+    }
+}

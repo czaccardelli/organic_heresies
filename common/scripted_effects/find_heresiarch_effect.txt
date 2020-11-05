@@ -3,9 +3,9 @@
 find_heresiarch_effect = {
     every_county_province = {
         every_pool_character = {
+            province = prev
             limit = {
                 has_trait = heresiarch
-                province = prev
                 faith = root.faith
             }
             add_to_list = heresiarchs

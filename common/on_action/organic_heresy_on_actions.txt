@@ -1,0 +1,31 @@
+﻿# called in addition to base on_faith_monthly actions in common/on_action/religion_on_action
+on_faith_monthly = {
+	on_actions = {
+		faith_heresy_spread_pulse
+	}	
+}
+
+faith_heresy_spread_pulse = {
+    trigger = {
+        any_province = {
+            county = {
+                has_county_modifier = heretic_stronghold_modifier
+                faith = root
+            }
+        }
+    }
+    effect = {
+        every_pool_character = {
+            # use a trivially true location to search every pool character (probably bad for performance, but works for now)
+            province = this.location
+            limit = {
+                has_trait = heresiarch
+                faith = root
+            }
+            heresiarch_county_conversion_tick_effect
+        }
+    }
+    #events = {
+    #    organic_heresy.0011
+    #}    
+}

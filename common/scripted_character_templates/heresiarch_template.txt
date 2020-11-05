@@ -47,7 +47,7 @@ heresiarch_template = {
 		max_template_low_skill
 	}
 	learning = {
-		min_template_low_skill
-		max_template_low_skill
+		min_template_decent_skill
+		max_template_decent_skill
 	}
 }

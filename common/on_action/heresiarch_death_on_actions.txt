@@ -1,0 +1,26 @@
+﻿# called in addition to those in common/on_actions/death.txt
+on_death = {
+    on_actions = {
+        on_heresiarch_death
+    }
+}
+
+on_heresiarch_death = {
+    trigger = {
+        has_trait = heresiarch
+    }
+    effect = {
+        var:stronghold = { save_scope_as = heretic_stronghold }
+        scope:heretic_stronghold.county = {
+            if = {
+                limit = {
+                    has_county_modifier = heretic_stronghold_modifier
+                }
+                remove_county_modifier = heretic_stronghold_modifier
+            }
+        }
+    }
+    events = {
+        heresiarch.0002
+    }
+}

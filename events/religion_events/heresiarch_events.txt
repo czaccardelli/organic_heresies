@@ -1,4 +1,6 @@
-﻿# a new heresiarch appears
+﻿namespace = heresiarch
+
+# a new heresiarch appears
 heresiarch.0001 = {
     type = character_event
     title = heresiarch.0001.t
@@ -7,17 +9,17 @@ heresiarch.0001 = {
     theme = faith
 
     left_portrait = {
-        character = new_heresiarch
+        character = scope:heresiarch
         animation = personality_bold
     }
     override_background = { event_background = alley_day }
 
-    scope:new_heresiarch.var:stronghold = { save_scope_as = stronghold }
 
     immediate = {
+        scope:heresiarch.var:stronghold = { save_scope_as = stronghold }
         show_as_tooltip = {
-            scope:stronghold = {
-                set_county_faith = scope:new_heresiarch.faith
+            scope:stronghold.county = {
+                set_county_faith = scope:heresiarch.faith
                 add_county_modifier = { modifier = heretic_stronghold_modifier }
             }
         }
@@ -40,18 +42,17 @@ heresiarch.0002 = {
 
     theme = death
 
-    save_scope_as = dead_heresiarch
     left_portrait = {
-        character = dead_heresiarch
+        character = scope:dead_heresiarch
     }
     override_background = { event_background = alley_night }
 
-    scope:dead_heresiarch.var:stronghold = { save_scope_as = stronghold }
-
     immediate = {
+        save_scope_as = dead_heresiarch
+        scope:dead_heresiarch.var:stronghold = { save_scope_as = stronghold }
         show_as_tooltip = {
-            scope:stronghold = {
-                remove_county_modifier = { modifier = heretic_stronghold_modifier }
+            scope:stronghold.county = {
+                remove_county_modifier = heretic_stronghold_modifier
             }
         }
     }
@@ -74,25 +75,28 @@ heresiarch.1000 = {
         tier = tier_county
     }
 
-    save_scope_as = stronghold
-
     immediate = {
+        save_scope_as = stronghold_county
         if = {
             limit = { has_county_modifier = heretic_stronghold_modifier }
             remove_county_modifier = heretic_stronghold_modifier
         }
-        every_heresiarch = {
-            limit = {
-                faith = scope:old_faith
-                AND = {
-                    has_variable = heresiarch_stronghold
-                    var:heresiarch_stronghold = scope:stronghold
+        every_county_province = {
+            every_pool_character = {
+                province = prev
+                limit = {
+                    has_trait = heresiarch
+                    faith = scope:old_faith
+                    AND = {
+                        has_variable = stronghold
+                        var:stronghold.county = scope:stronghold_county
+                    }
                 }
-            }
-            remove_variable = heresiarch_stronghold
-            trigger_event = {
-                id = heresiarch.1001
-                days = { 1 3 }
+                remove_variable = stronghold
+                trigger_event = {
+                    id = heresiarch.1001
+                    days = { 1 3 }
+                }
             }
         }
     }
@@ -105,7 +109,7 @@ heresiarch.1001 = {
 
     trigger = {
         NOT = {
-            has_variable = heresiarch_stronghold
+            has_variable = stronghold
         }
     }
 
@@ -113,7 +117,8 @@ heresiarch.1001 = {
         every_player = {
             send_interface_message = {
                 type = event_generic_neutral
-                title = gffdgdfsgsfd
+                # DEBUG
+                title = heretic_stronghold_modifier
             }
         }
     }
@@ -129,15 +134,19 @@ heresiarch.2000 = {
     }
 
     immediate = {
-        every_province_in_county = {
-            every_heresiarch = {
+        every_county_province = {
+            every_pool_character = {
+                province = prev
                 limit = {
-                    province = prev
+                    has_trait = heresiarch
                     faith = root.faith
                 }
-                trigger_event = {
-                    id = heresiarch.2001
-                    days = { 3 5 }
+                this = {
+                    save_scope_as = moving_heresiarch
+                    trigger_event = {
+                        id = heresiarch.2001
+                        days = { 3 5 }
+                    }
                 }
             }
         }
@@ -145,13 +154,11 @@ heresiarch.2000 = {
 }
 # moves a heresiarch to a random new valid province
 heresiarch.2001 = {
-    scope = character
     hidden = yes
 
-    save_scope_as = moving_heresiarch
-
     immediate = {
-        move_heresiarch_effect = yes
-        heresiarch_begin_converting_county_effect = yes
+        save_scope_as = moving_heresiarch
+        move_heresiarch_effect = { HERESIARCH = scope:moving_heresiarch }
+        heresiarch_begin_converting_county_effect = { HERESIARCH = scope:moving_heresiarch }
     }
 }

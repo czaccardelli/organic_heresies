@@ -273,7 +273,9 @@ organic_heresy.0001 = {
                         # don't pick provinces that don't border other provinces (i.e. islands)
                         county = { any_neighboring_county = { always = yes } }
                         # don't convert holy sites
-                        NOT = { is_holy_site_of = scope:original_faith }
+                        NOT = {
+                            this.barony = { is_holy_site_of = scope:original_faith }
+                        }
                     }
                     weight = {
                         base = 100
@@ -391,7 +393,9 @@ organic_heresy.0005 = {
                         # don't pick provinces that don't border other provinces (i.e. islands)
                         county = { any_neighboring_county = { always = yes } }
                         # don't convert holy sites
-                        NOT = { is_holy_site_of = scope:original_faith }
+                        NOT = {
+                            this.barony = { is_holy_site_of = scope:original_faith }
+                        }
                     }
                     weight = {
                         base = 100
@@ -498,11 +502,12 @@ organic_heresy.0010 = {
         # create the heresiarch
         scope:heretic_stronghold.county = {
             create_heresiarch_effect = {
-                STRONGHOLD_COUNTY = scope:heretic_stronghold.county
+                STRONGHOLD_PROVINCE = scope:heretic_stronghold
                 STRONGHOLD_FAITH = scope:heresy
             }
+            scope:new_heresiarch = { save_scope_as = heresiarch }
             every_player = {
-                limit = { faith = original_faith }
+                limit = { faith = scope:original_faith }
                 trigger_event = {
                     id = heresiarch.0001
                 }
@@ -728,8 +733,9 @@ organic_heresy.0011 = {
                     # make sure the county has heretic neighbors to stop 'islands' from forming and to maintain a good spread pattern
                     any_neighboring_county = { faith = root }
                     # don't convert holy sites
-                    any_faith = {
-                        NOT = { is_holy_site_of = this }
+                    any_county_province = {
+                        this.barony = { is_holy_site_of = scope:original_faith }
+                        count = 0
                     }
                 }
                 weight = {
@@ -791,9 +797,8 @@ organic_heresy.1000 = {
         always = yes
     }
 
-    save_scope_as = heretic_county
-    
     immediate = {
+        save_scope_as = heretic_county
         scope:heretic_county.faith = { save_scope_as = heresy }
         every_player = {
 #        limit = {
