@@ -1,8 +1,9 @@
 ﻿valid_heresiarch_trigger = {
     any_county_province = {
+        this = { save_temporary_scope_as = heresiarch_province }
         any_pool_character = {
             has_trait = heresiarch
-            province = prev
+            province = scope:heresiarch_province
             faith = root.faith
         }
     }

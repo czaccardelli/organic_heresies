@@ -135,8 +135,9 @@ heresiarch.2000 = {
 
     immediate = {
         every_county_province = {
+            this = { save_temporary_scope_as = heresiarch_province }
             every_pool_character = {
-                province = prev
+                province = scope:heresiarch_province
                 limit = {
                     has_trait = heresiarch
                     faith = root.faith

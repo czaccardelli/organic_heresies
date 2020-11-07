@@ -11,10 +11,9 @@
             # make sure the county has heretic neighbors to stop 'islands' from forming and to maintain a good spread pattern
             any_neighboring_county = { faith = scope:moving_heresiarch.faith }
             # don't move to holy sites belonging to their proper religion
-            any_in_de_jure_hierarchy = {
-                tier = tier_barony
-                continue = { tier > tier_barony }
-                NOT = { is_holy_site_of = scope:old_faith }
+            any_county_province = {
+                this.barony = { is_holy_site_of = scope:old_faith }
+                count = 0
             }
         }
         weight = {

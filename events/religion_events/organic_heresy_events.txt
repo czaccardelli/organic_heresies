@@ -20,12 +20,12 @@ organic_heresy.0001 = {
     }
 
     immediate = {
-        save_scope_as = original_faith
+        save_scope_as = old_faith
         # Compile a list of possible heresies to convert to.
         religion = {
             every_faith = {
                 limit = {
-                    this.religion = scope:original_faith.religion
+                    this.religion = scope:old_faith.religion
                 }
                 add_to_list = potential_heresies
             }
@@ -175,14 +175,14 @@ organic_heresy.0001 = {
                 OR = {
                     # head of faith's lands can't spawn a heretic stronghold
                     NOT = {
-                        exists = scope:original_faith.religious_head
+                        exists = scope:old_faith.religious_head
                     }
                     AND = {
-                        exists = scope:original_faith.religious_head
-                        NOT = { this = scope:original_faith.religious_head }
+                        exists = scope:old_faith.religious_head
+                        NOT = { this = scope:old_faith.religious_head }
                     }
                 }
-                faith = scope:original_faith
+                faith = scope:old_faith
             }
             weight = {
                 base = 100
@@ -267,14 +267,14 @@ organic_heresy.0001 = {
             this = {
                 random_realm_province = {
                     limit = {
-                        faith = scope:original_faith
+                        faith = scope:old_faith
                         # don't pick provinces that already belong to the heresy...
                         NOT = { faith = scope:heresy }
                         # don't pick provinces that don't border other provinces (i.e. islands)
                         county = { any_neighboring_county = { always = yes } }
                         # don't convert holy sites
                         NOT = {
-                            this.barony = { is_holy_site_of = scope:original_faith }
+                            this.barony = { is_holy_site_of = scope:old_faith }
                         }
                     }
                     weight = {
@@ -328,7 +328,7 @@ organic_heresy.0005 = {
     }
 
     immediate = {
-        save_scope_as = original_faith
+        save_scope_as = old_faith
 
         # compile a list of eastern religions that can contain heretical faiths
         religion:buddhism_religion = {
@@ -357,14 +357,14 @@ organic_heresy.0005 = {
                 OR = {
                     # head of faith's lands can't spawn a heretic stronghold
                     NOT = {
-                        exists = scope:original_faith.religious_head
+                        exists = scope:old_faith.religious_head
                     }
                     AND = {
-                        exists = scope:original_faith.religious_head
-                        NOT = { this = scope:original_faith.religious_head }
+                        exists = scope:old_faith.religious_head
+                        NOT = { this = scope:old_faith.religious_head }
                     }
                 }
-                faith = scope:original_faith
+                faith = scope:old_faith
             }
             weight = {
                 base = 100
@@ -389,12 +389,12 @@ organic_heresy.0005 = {
             this = {
                 random_realm_province = {
                     limit = {
-                        faith = scope:original_faith
+                        faith = scope:old_faith
                         # don't pick provinces that don't border other provinces (i.e. islands)
                         county = { any_neighboring_county = { always = yes } }
                         # don't convert holy sites
                         NOT = {
-                            this.barony = { is_holy_site_of = scope:original_faith }
+                            this.barony = { is_holy_site_of = scope:old_faith }
                         }
                     }
                     weight = {
@@ -507,7 +507,7 @@ organic_heresy.0010 = {
             }
             scope:new_heresiarch = { save_scope_as = heresiarch }
             every_player = {
-                limit = { faith = scope:original_faith }
+                limit = { faith = scope:old_faith }
                 trigger_event = {
                     id = heresiarch.0001
                 }
@@ -516,7 +516,7 @@ organic_heresy.0010 = {
             set_county_faith = scope:heresy
             add_county_modifier = { modifier = heretic_stronghold_modifier }
             # adjust fervor
-            scope:original_faith = { change_fervor = 20 }
+            scope:old_faith = { change_fervor = 20 }
             # send interface message about heretic stronghold (placeholder)
             every_player = {
 #                        limit = {
@@ -604,23 +604,26 @@ organic_heresy.0010 = {
                 # don't convert head of faith's land
                 limit = {
                     OR = {
-                        NOT = { exists = scope:original_faith.religious_head }
+                        NOT = { exists = scope:old_faith.religious_head }
                         AND = {
-                            exists = scope:original_faith.religious_head
-                            NOT = { holder = scope:original_faith.religious_head }
+                            exists = scope:old_faith.religious_head
+                            NOT = { holder = scope:old_faith.religious_head }
                         }
                     }
                     # don't convert neighboring counties if they aren't part of the original religion
-                    faith = scope:original_faith
+                    faith = scope:old_faith
                     # don't convert holy sites
-                    NOT = { is_holy_site_of = scope:original_faith }
+                    any_county_province = {
+                        this.barony = { is_holy_site_of = scope:old_faith }
+                        count = 0
+                    }
                 }
                 this = { save_scope_as = heretic_county }
                 random = {
                     chance = 50
                     set_county_faith = scope:heresy
                     # adjust fervor
-                    scope:original_faith = { change_fervor = 7 }
+                    scope:old_faith = { change_fervor = 7 }
                     # send notifications to players about converted counties
                     every_player = {
 #                        limit = {
@@ -734,7 +737,7 @@ organic_heresy.0011 = {
                     any_neighboring_county = { faith = root }
                     # don't convert holy sites
                     any_county_province = {
-                        this.barony = { is_holy_site_of = scope:original_faith }
+                        this.barony = { is_holy_site_of = scope:old_faith }
                         count = 0
                     }
                 }
