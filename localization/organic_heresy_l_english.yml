@@ -1,5 +1,5 @@
 ﻿l_english:
  HERETICS_SPAWNED:0 "Heretics in [heretic_county.GetName]!"
  HERETICS_SPAWNED_DESC:0 "[heretic_county.GetName] has succumbed to [heresy.GetName]!  This is from the heretic stronghold in [heretic_stronghold.GetName]."
- HERETIC_STRONGHOLD_SPAWNED:0 "Heretic stronghold in [heretic_stronghold.GetName]!"
- HERETIC_STRONGHOLD_SPAWNED_DESC:0 "[heresy.GetAdjective] heretics have made [heretic_stronghold.GetName] into a heretic stronghold!"
+ HERETIC_STRONGHOLD_SPAWNED:0 "Heretic stronghold in [heretic_county.GetName]!"
+ HERETIC_STRONGHOLD_SPAWNED_DESC:0 "[heresy.GetAdjective] heretics have made [heretic_county.GetName] into a heretic stronghold!"

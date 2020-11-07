@@ -500,7 +500,8 @@ organic_heresy.0010 = {
     }
     immediate = {
         # create the heresiarch
-        scope:heretic_stronghold.county = {
+        scope:heretic_stronghold.county = { save_scope_as = heretic_county }
+        scope:heretic_county = {
             create_heresiarch_effect = {
                 STRONGHOLD_PROVINCE = scope:heretic_stronghold
                 STRONGHOLD_FAITH = scope:heresy

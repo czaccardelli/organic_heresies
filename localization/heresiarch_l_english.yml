@@ -4,6 +4,6 @@
   heresiarch.0001.a:0 "[new_heresiarch.GetShortUIName] must be stopped from further spreading [heresy.GetName]!"
 
   heresiarch.0002.t:0 "[dead_heresiarch.GetName] is no more!"
-  heresiarch.0002.desc:0 "Word has spread that [dead_heresiarch.GetName] has died and his [stronghold.Faith.GetAdjective] followers are left without their leader.  [stronghold.GetName], once the local center of [stronghold.Faith.GetName], still has [stronghold.Faith.GetAdjective] followers but their zealousness and faith has been weakened with the passing of [dead_heresiarch.GetName]."
-  heresiarch.0002.a:0 "Without [dead_heresiarch.GetName] to misguide them, they can now be led back to the faith."
+  heresiarch.0002.desc:0 "Word has spread that [dead_heresiarch.GetName] has died and his [heresiarch_faith.GetAdjective] followers are left without their leader.  [stronghold.GetName], once the local center of [heresiarch_faith.GetName], still has local followers but their zealousness and faith has been weakened with the passing of [dead_heresiarch.GetName]."
+  heresiarch.0002.a:0 "Now to lead them back to the faith..."
 

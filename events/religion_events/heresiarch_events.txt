@@ -34,8 +34,23 @@ heresiarch.0001 = {
     }
 }
 
-# the heresiarch dies
+# notify relevant characters about heresiarch's death
 heresiarch.0002 = {
+    hidden = yes
+    scope = character
+
+    immediate = {
+        save_scope_as = dead_heresiarch
+        scope:dead_heresiarch.var:stronghold.county = { save_scope_as = stronghold }
+        scope:dead_heresiarch.faith = { save_scope_as = heresiarch_faith }
+        every_player = {
+                trigger_event = heresiarch.0003
+        }
+    }
+}
+
+# the heresiarch dies
+heresiarch.0003 = {
     type = character_event
     title = heresiarch.0002.t
     desc = heresiarch.0002.desc
@@ -48,8 +63,6 @@ heresiarch.0002 = {
     override_background = { event_background = alley_night }
 
     immediate = {
-        save_scope_as = dead_heresiarch
-        scope:dead_heresiarch.var:stronghold = { save_scope_as = stronghold }
         show_as_tooltip = {
             scope:stronghold.county = {
                 remove_county_modifier = heretic_stronghold_modifier
