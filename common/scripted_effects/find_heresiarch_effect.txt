@@ -2,11 +2,13 @@
 # root is a county
 find_heresiarch_effect = {
     every_county_province = {
+        save_temporary_scope_as = temp_province
         every_pool_character = {
-            province = prev
+            province = scope:temp_province
             limit = {
                 has_trait = heresiarch
                 faith = root.faith
+                location = scope:temp_province
             }
             add_to_list = heresiarchs
         }

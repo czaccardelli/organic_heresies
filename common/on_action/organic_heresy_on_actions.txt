@@ -15,15 +15,32 @@ faith_heresy_spread_pulse = {
         }
     }
     effect = {
-        every_pool_character = {
-            # use a trivially true location to search every pool character (probably bad for performance, but works for now)
-            province = this.location
-            limit = {
-                has_trait = heresiarch
-                faith = root
+        every_province = {
+            save_temporary_scope_as = heresiarch_province
+            every_pool_character = {
+                province = scope:heresiarch_province
+                limit = {
+                    has_trait = heresiarch
+                    faith = root
+                    # location filter is necessary because the 'province = blah' field in *_pool_character actually checks every pool character in the duchy that contains the province
+                    # which causes the effect to fire X times where X = number of provinces in the duchy
+                    location = scope:heresiarch_province
+                }
+                save_scope_as = debug_scope
+                every_player = {
+                    send_interface_message = {
+                        type = event_generic_neutral
+                        # DEBUG
+                        title = heretic_stronghold_modifier
+                        custom_tooltip = debug_def
+                    }
+                }
+                heresiarch_county_conversion_tick_effect = {
+                    HERESIARCH = this
+                }
             }
-            heresiarch_county_conversion_tick_effect
         }
+
     }
     #events = {
     #    organic_heresy.0011

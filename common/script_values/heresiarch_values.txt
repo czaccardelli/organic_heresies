@@ -17,7 +17,7 @@ heresiarch_county_conversion_uptick_value = {
         subtract = location.county.county_control
         min = 0
     }
-    # TODO: change sinfulness_multiplier to be based on sins in the county's faith, not the characters'
+    # TODO: change sinfulness_multiplier to be based on sins in the county's faith, not the characters' faith
     multiply = {
         add = location.county.holder.sinfulness_multiplier
         add = location.county.holder.cp:councillor_court_chaplain.sinfulness_multiplier

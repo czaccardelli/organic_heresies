@@ -19,8 +19,9 @@ on_heretic_stronghold_faith_change = {
     trigger = {
         has_county_modifier = heretic_stronghold_modifier
         any_county_province = {
+            save_temporary_scope_as = temp_province
             any_pool_character = {
-                province = prev
+                province = scope:temp_province
                 # scope:old_faith is used because it's assumed that the county has converted away from heresiarch's faith already
                 faith = scope:old_faith
                 has_trait = heresiarch

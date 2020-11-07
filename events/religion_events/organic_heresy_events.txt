@@ -799,6 +799,7 @@ organic_heresy.1000 = {
     scope = landed_title
     trigger = {
         always = yes
+        tier = tier_county
     }
 
     immediate = {

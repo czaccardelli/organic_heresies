@@ -95,11 +95,13 @@ heresiarch.1000 = {
             remove_county_modifier = heretic_stronghold_modifier
         }
         every_county_province = {
+            save_temporary_scope_as = temp_province
             every_pool_character = {
-                province = prev
+                province = scope:temp_province
                 limit = {
                     has_trait = heresiarch
                     faith = scope:old_faith
+                    location = scope:temp_province
                     AND = {
                         has_variable = stronghold
                         var:stronghold.county = scope:stronghold_county
@@ -148,12 +150,13 @@ heresiarch.2000 = {
 
     immediate = {
         every_county_province = {
-            this = { save_temporary_scope_as = heresiarch_province }
+            save_temporary_scope_as = temp_province
             every_pool_character = {
-                province = scope:heresiarch_province
+                province = scope:temp_province
                 limit = {
                     has_trait = heresiarch
                     faith = root.faith
+                    location = scope:temp_province
                 }
                 this = {
                     save_scope_as = moving_heresiarch
