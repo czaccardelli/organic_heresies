@@ -1,4 +1,4 @@
-﻿base_heresiarch_conversion_value = 10000 #200
+﻿base_heresiarch_conversion_value = 200
 base_heresiarch_conversion_divisor = 100
 
 # scope is character (heresiarch)
