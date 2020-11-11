@@ -27,14 +27,6 @@ faith_heresy_spread_pulse = {
                     location = scope:heresiarch_province
                 }
                 save_scope_as = debug_scope
-                every_player = {
-                    send_interface_message = {
-                        type = event_generic_neutral
-                        # DEBUG
-                        title = heretic_stronghold_modifier
-                        custom_tooltip = debug_def
-                    }
-                }
                 heresiarch_county_conversion_tick_effect = {
                     HERESIARCH = this
                 }
