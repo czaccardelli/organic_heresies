@@ -129,13 +129,14 @@ heresiarch.1001 = {
     }
 
     immediate = {
+        # DEBUG
         every_player = {
             send_interface_message = {
                 type = event_generic_neutral
-                # DEBUG
                 title = heretic_stronghold_modifier
             }
         }
+        # DEBUG
     }
 }
 
@@ -169,6 +170,7 @@ heresiarch.2000 = {
         }
     }
 }
+
 # moves a heresiarch to a random new valid province
 heresiarch.2001 = {
     hidden = yes
@@ -177,5 +179,113 @@ heresiarch.2001 = {
         save_scope_as = moving_heresiarch
         move_heresiarch_effect = { HERESIARCH = scope:moving_heresiarch }
         heresiarch_begin_converting_county_effect = { HERESIARCH = scope:moving_heresiarch }
+        # DEBUG
+        every_player = {
+            send_interface_message = {
+                type = event_generic_neutral
+                title = heretic_stronghold_modifier
+                right_icon = scope:moving_heresiarch
+                show_as_tooltip = {
+                    move_heresiarch_effect = { HERESIARCH = scope:moving_heresiarch }
+                }
+            } 
+        }
+        # DEBUG
+    }
+}
+
+# heresiarch converts a province
+heresiarch.3000 = {
+    hidden = yes
+    scope = character
+    trigger = {
+        has_trait = heresiarch
+    }
+
+    immediate = {
+        scope:heresiarch.location.county = { save_scope_as = heretic_county }
+        scope:heresiarch.faith = { save_scope_as = heresy }
+        scope:heretic_county = { set_county_faith = scope:heresy }
+        every_player = {
+#        limit = {
+#            OR = {
+#                # notify everyone whose top liege is also the top liege of the converted county's holder (aka in the same independent realm)
+#                AND = {
+#                exists = scope:heretic_county.holder.top_liege
+#                top_liege = scope:heretic_county.holder.top_liege
+#                }
+#                # notify everyone near the converted county
+#                AND = {
+#                exists = capital_county
+#                    capital_county = {
+#                         squared_distance = {
+#                            target = this
+#                            value < squared_distance_medium
+#                       }	
+#                    }
+#                }
+#            }
+#        }
+            this = {
+                save_scope_as = current_player
+                faith = {
+                    save_scope_as = player_faith
+                }
+            }
+            # send a good message if the heresy is player's faith
+            if = {
+                limit = {
+                    scope:player_faith = scope:heresy
+                }
+                send_interface_message = {
+                    type = event_heretic_stronghold_good
+                    title = HERETICS_SPAWNED
+                    desc = HERETICS_SPAWNED_DESC
+                    show_as_tooltip = {
+                        scope:heretic_county = { set_county_faith = scope:heresy }
+                    }
+                }
+            }
+            # send a bad message if the heresy is not the player's faith and they consider it hostile or evil
+            else_if = {
+                limit = {
+                    NOT = { scope:player_faith = scope:heresy }
+                    scope:player_faith = {
+                        faith_hostility_level = {
+                            target = scope:heresy
+                            value >= 2
+                        }
+                    }
+                }
+                send_interface_message = {
+                    type = event_heretic_stronghold_bad
+                    title = HERETICS_SPAWNED
+                    desc = HERETICS_SPAWNED_DESC
+                    show_as_tooltip = {
+                        scope:heretic_county = { set_county_faith = scope:heresy }
+                    }
+                }
+            }
+            # send a neutral message if the heresy is astray
+            else_if = {
+                limit = {
+                    NOT = { scope:player_faith = scope:heresy }
+                    scope:player_faith = {
+                        faith_hostility_level = {
+                            target = scope:heresy
+                            value = 1
+                        }
+                    }
+                }
+                send_interface_message = {
+                    type = event_heretic_stronghold_neutral
+                    title = HERETICS_SPAWNED
+                    desc = HERETICS_SPAWNED_DESC
+                    show_as_tooltip = {
+                        scope:heretic_county = { set_county_faith = scope:heresy }
+                    }
+                }
+            }
+        }
     }
 }

@@ -7,3 +7,5 @@
   heresiarch.0002.desc:0 "Word has spread that [dead_heresiarch.GetName] has died and his [heresiarch_faith.GetAdjective] followers are left without their leader.  [stronghold.GetName], once the local center of [heresiarch_faith.GetName], still has local followers but their zealousness and faith has been weakened with the passing of [dead_heresiarch.GetName]."
   heresiarch.0002.a:0 "Now to lead them back to the faith..."
 
+  move_heresiarch_effect_tt:0 "[moving_heresiarch.GetName] has moved and is now in [current_county.GetName]"
+

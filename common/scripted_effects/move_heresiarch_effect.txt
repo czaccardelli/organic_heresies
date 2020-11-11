@@ -1,5 +1,6 @@
 ﻿move_heresiarch_effect = {
     $HERESIARCH$ = { save_scope_as = moving_heresiarch }
+    scope:moving_heresiarch.location.county = { save_scope_as = current_county }
     random_county = {
         limit = {
             # don't move to provinces that are already owned by the heretics
@@ -48,6 +49,8 @@
                 }
             }
         }
-        save_scope_as = destination
+        title_province = { save_scope_as = destination }
     }
+    move_to_pool_at = scope:destination
+    custom_tooltip = move_heresiarch_effect_tt
 }

@@ -8,22 +8,22 @@
 }
 
 heresiarch_county_conversion_tick_effect = {
+    $HERESIARCH$ = { save_scope_as = heresiarch }
     if = {
         limit = {
-            exists = $HERESIARCH$.var:converting_county
+            exists = scope:heresiarch.var:converting_county
         }
         change_variable = {
             name = converting_county
-            add = $HERESIARCH$.heresiarch_county_conversion_uptick_value
+            add = scope:heresiarch.heresiarch_county_conversion_uptick_value
         }
     }
     if = {
         limit = {
-            $HERESIARCH$.var:converting_county >= 100
+            scope:heresiarch.var:converting_county >= 100
         }
-        $HERESIARCH$.location.county = {
-            set_county_faith = $HERESIARCH$.faith
-            trigger_event = organic_heresy.1000
+        scope:heresiarch = {
+            trigger_event = heresiarch.3000
         }
     }
 }
