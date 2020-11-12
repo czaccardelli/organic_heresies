@@ -60,6 +60,6 @@
         }
         title_province = { save_scope_as = destination }
     }
-    move_to_pool_at = scope:destination
+    hidden_effect = { move_to_pool_at = scope:destination }
     custom_tooltip = move_heresiarch_effect_tt
 }
