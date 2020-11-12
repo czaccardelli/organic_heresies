@@ -34,7 +34,4 @@ faith_heresy_spread_pulse = {
         }
 
     }
-    #events = {
-    #    organic_heresy.0011
-    #}    
 }
