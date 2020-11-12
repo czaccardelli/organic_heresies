@@ -27,6 +27,8 @@
             }
         }
         weight = {
+            # TODO: highly prefer to move to counties of same religion
+            # TODO: prefer to move to closer counties
             base = 100
             # counties with a faith with low fervor are more susceptible
             modifier = {
