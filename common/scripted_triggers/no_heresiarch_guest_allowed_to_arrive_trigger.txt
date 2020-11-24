@@ -8,7 +8,7 @@
 		NOT = { host = $HOST$ }
 	}
 	has_epidemic_disease_trigger = no
-    in_heresiarch_group_trigger = no
+	in_heresiarch_group_trigger = no
 	NOT = { has_relation_rival = $HOST$ }
 	#Compatible faiths
 	faith = {

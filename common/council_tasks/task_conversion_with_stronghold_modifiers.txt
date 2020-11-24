@@ -66,10 +66,12 @@
 				add = {
 					add = scope:councillor.court_chaplain_progress_percentage
 					multiply = scope:councillor.faith.fervor
+					multiply = convert_faith_fervor_modifier_scale
 				}
 				subtract = {
 					add = scope:councillor.court_chaplain_progress_percentage
 					multiply = scope:county.faith.fervor
+					multiply = convert_faith_fervor_modifier_scale
 				}
 				if = {
 					limit = {
@@ -358,8 +360,8 @@
 				desc = COURT_CHAPLAIN_CONVERSION_LOCAL_COUNTY_MODIFIERS
 			}
 		}
-        
-        # heretic stronghold malus
+		
+		# heretic stronghold malus
 
         if = {
             limit = {
@@ -601,15 +603,23 @@
 	}
 
 	on_finish_task_county = {
-		scope:councillor_liege = {
-			trigger_event = court_chaplain_task.0201
+		scope:county = {
+			set_county_faith = scope:councillor.faith
+			if = {
+				limit = { has_county_modifier = heretic_stronghold_modifier }
+			}
+			remove_county_modifier = heretic_stronghold_modifier
 		}
-        scope:county = {
-            if = {
-                limit = { has_county_modifier = heretic_stronghold_modifier }
-            }
-            remove_county_modifier = heretic_stronghold_modifier
-        }
+		if = {
+			limit = {
+				scope:councillor = {
+					has_council_position = councillor_court_chaplain
+				}
+			}
+			scope:councillor = {
+				start_default_task = yes
+			}
+		}
 	}
 
 	on_start_task = {
